@@ -18,4 +18,5 @@ public class RoleEntity extends BaseModel {
     private UUID created_by;
     private LocalDateTime deleted_time;
     private UUID deleted_by;
+
 }
