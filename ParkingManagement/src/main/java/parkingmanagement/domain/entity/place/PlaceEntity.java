@@ -1,14 +1,13 @@
 package parkingmanagement.domain.entity.place;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import parkingmanagement.domain.entity.BaseEntity;
 import parkingmanagement.domain.entity.orders.OrderEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "places")
 @AllArgsConstructor
@@ -23,4 +22,11 @@ public class PlaceEntity extends BaseEntity {
     private PlaceType type;
     @OneToMany
     private List<OrderEntity> orders;
+    @Enumerated(EnumType.STRING)
+    private PlaceStatus status;
+    private UUID created_by;
+    private LocalDateTime deleted_time;
+    private UUID  deleted_by;
+    @Column(columnDefinition = "boolean default false")
+    private boolean is_deleted;
 }

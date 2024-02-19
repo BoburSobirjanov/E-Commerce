@@ -1,4 +1,4 @@
-package parkingmanagement.domain.dto;
+package uz.com.ecommers.model.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,9 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-public class PlaceCreateDto {
-    private String floor;
-    private String place;
-    private String type;
+@Setter
+public class LoginDto {
+    private String email;
+    private String password;
 }
