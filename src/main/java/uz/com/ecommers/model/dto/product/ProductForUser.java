@@ -2,7 +2,7 @@ package uz.com.ecommers.model.dto.product;
 
 import lombok.*;
 import uz.com.ecommers.model.entity.product.ProductState;
-import uz.com.ecommers.model.entity.product.ProductType;
+import uz.com.ecommers.model.entity.product.ProductCategory;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class ProductForUser {
     private String name;
     private Double price;
     private Integer count;
-    private ProductType type;
+    private String category;
     private ProductState state;
     private String description;
 }

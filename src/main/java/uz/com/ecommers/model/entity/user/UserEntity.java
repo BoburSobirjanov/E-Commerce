@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.com.ecommers.model.BaseModel;
+import uz.com.ecommers.model.entity.card.CardEntity;
+import uz.com.ecommers.model.entity.order.OrderEntity;
 import uz.com.ecommers.model.entity.role.RoleEntity;
 import uz.com.ecommers.model.entity.product.ProductEntity;
 
@@ -24,7 +26,7 @@ import java.util.UUID;
 public class UserEntity extends BaseModel implements UserDetails {
 
     @Column(nullable = false)
-    private String full_name;
+    private String fullName;
 
     @Column(unique = true,nullable = false)
     private String email;
@@ -33,21 +35,26 @@ public class UserEntity extends BaseModel implements UserDetails {
     private String password;
 
     @Column(nullable = false,unique = true)
-    private String phone_number;
+    private String phoneNumber;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<RoleEntity> roles;
+
+    @OneToMany
+    private List<OrderEntity> orders;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private UUID deleted_by;
+    private UUID deletedBy;
+    @OneToMany
+    private List<CardEntity> card;
 
-    private LocalDateTime deleted_time;
+    private LocalDateTime deletedTime;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @OneToMany
     private List<ProductEntity> products;
