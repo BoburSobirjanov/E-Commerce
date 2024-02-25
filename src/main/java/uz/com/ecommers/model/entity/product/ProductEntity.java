@@ -1,9 +1,6 @@
 package uz.com.ecommers.model.entity.product;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 import uz.com.ecommers.model.BaseModel;
 
@@ -24,13 +21,13 @@ public class ProductEntity extends BaseModel {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private ProductType type;
+    private UUID createdBy;
 
-    private UUID created_by;
+    private LocalDateTime deletedTime;
 
-    private LocalDateTime deleted_time;
+    private String category;
+
+    private String color;
 
     @Column(nullable = false)
     private String description;
@@ -39,9 +36,9 @@ public class ProductEntity extends BaseModel {
     private Integer count;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean is_deleted;
+    private boolean isDeleted;
 
-    private UUID deleted_by;
+    private UUID deletedBy;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

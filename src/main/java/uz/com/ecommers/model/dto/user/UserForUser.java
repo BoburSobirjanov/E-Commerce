@@ -14,9 +14,9 @@ import java.util.UUID;
 @Builder
 public class UserForUser {
     private UUID id;
-    private String full_name;
+    private String fullName;
     private String email;
-    private String phone_number;
+    private String phoneNumber;
     private Gender gender;
     private List<RoleEntity> roles;
 }

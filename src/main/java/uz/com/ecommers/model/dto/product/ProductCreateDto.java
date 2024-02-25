@@ -11,7 +11,7 @@ public class ProductCreateDto {
     private String name;
     private Double price;
     private String description;
-    private String type;
+    private String category;
     private String state;
     private Integer count;
 }

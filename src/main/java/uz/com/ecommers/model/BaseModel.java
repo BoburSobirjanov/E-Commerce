@@ -26,8 +26,8 @@ public abstract class BaseModel {
     protected UUID id;
 
     @CreationTimestamp
-    protected LocalDateTime created_time;
+    protected LocalDateTime createdTime;
 
     @UpdateTimestamp
-    protected LocalDateTime updated_time;
+    protected LocalDateTime updatedTime;
 }
