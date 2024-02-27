@@ -2,6 +2,8 @@ package uz.com.ecommers.model.dto.user;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

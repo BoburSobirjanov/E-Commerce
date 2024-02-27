@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uz.com.ecommers.model.BaseModel;
 import uz.com.ecommers.model.entity.card.CardEntity;
 import uz.com.ecommers.model.entity.order.OrderEntity;
-import uz.com.ecommers.model.entity.role.RoleEntity;
 import uz.com.ecommers.model.entity.product.ProductEntity;
 
 import java.time.LocalDateTime;
@@ -37,8 +36,7 @@ public class UserEntity extends BaseModel implements UserDetails {
     @Column(nullable = false,unique = true)
     private String phoneNumber;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<RoleEntity> roles;
+    private UserRole roles;
 
     @OneToMany
     private List<OrderEntity> orders;
@@ -61,11 +59,8 @@ public class UserEntity extends BaseModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String ROLE="ROLE_";
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (RoleEntity role : roles) {
-            authorities.add(new SimpleGrantedAuthority(ROLE + role.getName()));
-        }
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + roles.name()));
         return authorities;
     }
 
