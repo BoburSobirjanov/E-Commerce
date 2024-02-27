@@ -1,7 +1,7 @@
 package uz.com.ecommers.model.dto.user;
 
 import lombok.*;
-import uz.com.ecommers.model.entity.role.RoleEntity;
+import uz.com.ecommers.model.entity.user.UserRole;
 import uz.com.ecommers.model.entity.user.Gender;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public class UserForUser {
     private String email;
     private String phoneNumber;
     private Gender gender;
-    private List<RoleEntity> roles;
+    private List<UserRole> roles;
 }
