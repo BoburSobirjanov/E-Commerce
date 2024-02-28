@@ -5,7 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.com.ecommers.exception.AuthenticationFailedException;
+import uz.com.ecommers.exception.DataNotFoundException;
 import uz.com.ecommers.exception.UserBadRequestException;
+import uz.com.ecommers.model.dto.user.LoginDto;
 import uz.com.ecommers.model.dto.user.UserCreateDto;
 import uz.com.ecommers.model.dto.user.UserForUser;
 import uz.com.ecommers.model.entity.user.Gender;
@@ -61,5 +64,30 @@ public class UserService {
         if (userRepository.findUserEntityByPhoneNumber(phoneNumber).isPresent()){
             throw new UserBadRequestException("Number has already exist!");
         }
+    }
+
+    public StandardResponse<JwtResponse> login(LoginDto loginDto){
+       UserEntity userEntity = userRepository.findUserEntityByEmail(loginDto.getEmail());
+        if (userEntity == null){
+            throw new DataNotFoundException("User not found!");
+        }
+       if (passwordEncoder.matches(loginDto.getPassword(), userEntity.getPassword())){
+          String accessToken= jwtService.generateAccessToken(userEntity);
+          String refreshToken= jwtService.generateRefreshToken(userEntity);
+          UserForUser user = modelMapper.map(userEntity, UserForUser.class);
+          JwtResponse jwtResponse= JwtResponse.builder()
+                  .accessToken(accessToken)
+                  .refreshToken(refreshToken)
+                  .user(user)
+                  .build();
+          return StandardResponse.<JwtResponse>builder()
+                  .status(Status.SUCCESS)
+                  .message("Sign in successfully!")
+                  .data(jwtResponse)
+                  .build();
+       }
+       else{
+           throw new AuthenticationFailedException("Something error during signed in!");
+       }
     }
 }
