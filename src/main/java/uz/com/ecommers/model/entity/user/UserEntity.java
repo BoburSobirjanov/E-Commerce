@@ -36,6 +36,8 @@ public class UserEntity extends BaseModel implements UserDetails {
     @Column(nullable = false,unique = true)
     private String phoneNumber;
 
+    @Column(nullable=false)
+    @Enumerated(EnumType.STRING)
     private UserRole roles;
 
     @OneToMany
