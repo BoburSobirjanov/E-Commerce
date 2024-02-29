@@ -90,4 +90,19 @@ public class UserService {
            throw new AuthenticationFailedException("Something error during signed in!");
        }
     }
+
+    public StandardResponse<UserForUser> assignEmployer(String email){
+        UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+        if (userEntity==null){
+            throw new DataNotFoundException("User not found!");
+        }
+        userEntity.setRoles(UserRole.EMPLOYER);
+        userRepository.save(userEntity);
+        UserForUser user = modelMapper.map(userEntity, UserForUser.class);
+        return StandardResponse.<UserForUser>builder()
+                .status(Status.SUCCESS)
+                .message("Role changed!")
+                .data(user)
+                .build();
+    }
 }

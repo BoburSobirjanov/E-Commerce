@@ -4,7 +4,6 @@ import lombok.*;
 import uz.com.ecommers.model.entity.user.UserRole;
 import uz.com.ecommers.model.entity.user.Gender;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,5 +17,5 @@ public class UserForUser {
     private String email;
     private String phoneNumber;
     private Gender gender;
-    private List<UserRole> roles;
+    private UserRole roles;
 }

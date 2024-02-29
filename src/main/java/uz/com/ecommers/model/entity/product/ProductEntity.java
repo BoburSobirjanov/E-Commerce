@@ -5,6 +5,7 @@ import lombok.*;
 import uz.com.ecommers.model.BaseModel;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "products")
