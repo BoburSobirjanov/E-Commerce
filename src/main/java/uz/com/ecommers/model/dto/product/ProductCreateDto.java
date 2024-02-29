@@ -2,6 +2,8 @@ package uz.com.ecommers.model.dto.product;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,4 +16,5 @@ public class ProductCreateDto {
     private String category;
     private String state;
     private Integer count;
+    private String color;
 }
