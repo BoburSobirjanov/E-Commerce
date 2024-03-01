@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.com.ecommers.exception.AuthenticationFailedException;
 import uz.com.ecommers.exception.DataNotFoundException;
+import uz.com.ecommers.exception.NotAcceptableException;
 import uz.com.ecommers.exception.UserBadRequestException;
 import uz.com.ecommers.model.dto.user.LoginDto;
 import uz.com.ecommers.model.dto.user.UserCreateDto;
@@ -20,6 +21,10 @@ import uz.com.ecommers.response.StandardResponse;
 import uz.com.ecommers.response.Status;
 import uz.com.ecommers.service.auth.JwtService;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -105,4 +110,67 @@ public class UserService {
                 .data(user)
                 .build();
     }
+
+    public StandardResponse<UserForUser> assignToAdmin(String email){
+        UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+        if (userEntity==null){
+            throw new DataNotFoundException("This user not found!");
+        }
+        userEntity.setRoles(UserRole.ADMIN);
+        userRepository.save(userEntity);
+        UserForUser user = modelMapper.map(userEntity, UserForUser.class);
+        return StandardResponse.<UserForUser>builder()
+                .status(Status.SUCCESS)
+                .message("Role changed!")
+                .data(user)
+                .build();
+    }
+    public StandardResponse<UserForUser> removeAdmin(String email){
+        UserEntity user = userRepository.findUserEntityByEmail(email);
+        if (user==null){
+            throw new DataNotFoundException("User not found!");
+        }
+        if (user.getRoles()==UserRole.ADMIN){
+        user.setRoles(UserRole.EMPLOYER);
+        userRepository.save(user);
+        UserForUser userForUser = modelMapper.map(user,UserForUser.class);
+        return StandardResponse.<UserForUser>builder()
+                .status(Status.SUCCESS)
+                .message("Role changed successfully!")
+                .data(userForUser)
+                .build();
+        }
+        throw new DataNotFoundException("This user is not ADMIN now!");
+    }
+
+   public StandardResponse<String> deleteUser(String email, Principal principal){
+        UserEntity userEntity = userRepository.findUserEntityByEmail(principal.getName());
+        UserEntity user = userRepository.findUserEntityByEmail(email);
+        if (user==null){
+            throw new DataNotFoundException("User not found!");
+        }
+        if (user.getRoles()==UserRole.USER || user.getRoles()==UserRole.EMPLOYER){
+            user.setDeleted(true);
+            user.setDeletedBy(userEntity.getId());
+            user.setDeletedTime(LocalDateTime.now());
+            userRepository.save(user);
+            return StandardResponse.<String>builder()
+                    .status(Status.SUCCESS)
+                    .message("User deleted!")
+                    .data("DELETED SUCCESSFULLY")
+                    .build();
+        }
+       throw new NotAcceptableException("Can not delete this user!");
+   }
+
+   public StandardResponse<UserForUser> getUserById(UUID id){
+        Optional<UserEntity> userEntity= userRepository.findById(id);
+        UserForUser user = modelMapper.map(userEntity, UserForUser.class);
+        return StandardResponse.<UserForUser>builder()
+                .status(Status.SUCCESS)
+                .message("This is user")
+                .data(user)
+                .build();
+   }
+
 }
