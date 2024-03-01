@@ -46,5 +46,6 @@ public class CategoryController {
             @RequestParam String name
     ){
         return categoryService.getByName(name);
+
     }
 }
