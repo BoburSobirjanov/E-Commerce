@@ -19,6 +19,9 @@ import uz.com.ecommers.response.StandardResponse;
 import uz.com.ecommers.response.Status;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +61,22 @@ public class ProductService {
                 .status(Status.SUCCESS)
                 .message("Product saved successfully!")
                 .data(productForUser)
+                .build();
+    }
+
+    public StandardResponse<String> deleteById(UUID id,Principal principal){
+        UserEntity user = userRepository.findUserEntityByEmail(principal.getName());
+        ProductEntity product = productRepository.getProductEntityById(id);
+        if (product==null){
+            throw new DataNotFoundException("Product not found!");
+        }
+        product.setDeleted(true);
+        product.setDeletedTime(LocalDateTime.now());
+        product.setDeletedBy(user.getId());
+        return StandardResponse.<String>builder()
+                .status(Status.SUCCESS)
+                .message("Product deleted!")
+                .data("DELETED SUCCESSFULLY")
                 .build();
     }
 }

@@ -32,16 +32,16 @@ public class CategoryController {
     public StandardResponse<String> delete(
             @RequestParam String name,
             Principal principal
-    ){
-       return categoryService.delete(name,principal);
-    }
+    ){return categoryService.delete(name,principal);}
 
     @GetMapping("/get-all")
+    @PreAuthorize("hasRole('EMPLOYER') or hasRole('ADMIN')")
     public List<ProductCategory> getAll(){
         return categoryService.getAll();
     }
 
     @PostMapping("/get-by-name")
+    @PreAuthorize("hasRole('EMPLOYER') or hasRole('ADMIN')")
     public StandardResponse<CategoryForUser> getByName(
             @RequestParam String name
     ){
