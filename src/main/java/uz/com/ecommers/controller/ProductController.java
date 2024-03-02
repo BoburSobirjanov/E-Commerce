@@ -2,16 +2,14 @@ package uz.com.ecommers.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uz.com.ecommers.model.dto.product.ProductCreateDto;
 import uz.com.ecommers.model.dto.product.ProductForUser;
 import uz.com.ecommers.response.StandardResponse;
 import uz.com.ecommers.service.ProductService;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,11 +18,20 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('EMPLOYER')")
+    @PreAuthorize("hasRole('EMPLOYER') or hasRole('ADMIN')")
     public StandardResponse<ProductForUser> save(
             @RequestBody ProductCreateDto productCreateDto,
             Principal principal
             ){
        return productService.save(productCreateDto,principal);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasRole('EMPLOYER') or hasRole('ADMIN')")
+    public StandardResponse<String> delete(
+            @PathVariable UUID  id,
+            Principal principal
+            ){
+        return productService.deleteById(id, principal);
     }
 }

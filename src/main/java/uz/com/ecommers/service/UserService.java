@@ -163,6 +163,20 @@ public class UserService {
        throw new NotAcceptableException("Can not delete this user!");
    }
 
+   public StandardResponse<UserForUser> removeEmployer(String email){
+        UserEntity user = userRepository.findUserEntityByEmail(email);
+        if (user==null){
+            throw new DataNotFoundException("User not found!");
+        }
+        user.setRoles(UserRole.USER);
+        UserForUser userForUser = modelMapper.map(user, UserForUser.class);
+        return StandardResponse.<UserForUser>builder()
+                .status(Status.SUCCESS)
+                .message("Remove Employer!")
+                .data(userForUser)
+                .build();
+   }
+
    public StandardResponse<UserForUser> getUserById(UUID id){
         Optional<UserEntity> userEntity= userRepository.findById(id);
         UserForUser user = modelMapper.map(userEntity, UserForUser.class);

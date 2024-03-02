@@ -56,4 +56,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @PostMapping("/remove-employer")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
+    public StandardResponse<UserForUser> removeEmployer(
+            @RequestParam String email
+    ){
+        return userService.removeEmployer(email);
+    }
+
 }

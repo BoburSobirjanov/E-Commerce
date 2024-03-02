@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     @Query("select u from products as u where u.isDeleted=false and u.name=?1 and u.category=?2 and u.state=?3")
     ProductEntity findProductEntityByNameAndCategoryAndState(String name, String category, ProductState state);
+    @Query("select u from products as u where u.isDeleted=false and u.id=?1")
+    ProductEntity getProductEntityById(UUID id);
 }
