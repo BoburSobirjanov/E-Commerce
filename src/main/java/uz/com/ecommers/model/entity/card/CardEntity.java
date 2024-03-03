@@ -1,11 +1,9 @@
 package uz.com.ecommers.model.entity.card;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 import uz.com.ecommers.model.BaseModel;
+import uz.com.ecommers.model.entity.user.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,13 +14,18 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CardEntity extends BaseModel {
+
     @Column(nullable = false)
     private String cardNumber;
-    @Column(nullable = false)
-    private UUID ownerId;
+
+    @ManyToOne
+    private UserEntity ownerId;
+
     @Column(nullable = false)
     private String expireDate;
+
     @Enumerated(value = EnumType.STRING)
     private CardType type;
+
     private LocalDateTime deletedTime;
 }

@@ -20,16 +20,18 @@ public class UserController {
     @PostMapping("/assign-employer")
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public StandardResponse<UserForUser> assignEmployer(
-            @RequestParam String email
+            @RequestParam String email,
+            Principal principal
     ){
-        return userService.assignEmployer(email);
+        return userService.assignEmployer(email,principal);
     }
-    @PostMapping("/assign-employer")
+    @PostMapping("/assign-admin")
     @PreAuthorize("hasRole('OWNER')")
     public StandardResponse<UserForUser> assignToAdmin(
-            @RequestParam String email
+            @RequestParam String email,
+            Principal principal
     ){
-        return userService.assignToAdmin(email);
+        return userService.assignToAdmin(email,principal);
     }
 
     @DeleteMapping("/delete")
@@ -44,9 +46,10 @@ public class UserController {
     @PostMapping("/remove-admin")
     @PreAuthorize("hasRole('OWNER')")
     public StandardResponse<UserForUser> removeAdmin(
-            @RequestParam String email
+            @RequestParam String email,
+            Principal principal
     ){
-        return userService.removeAdmin(email);
+        return userService.removeAdmin(email,principal);
     }
 
     @GetMapping("/{id}/get-by-id")
@@ -59,9 +62,10 @@ public class UserController {
     @PostMapping("/remove-employer")
     @PreAuthorize("hasRole('ADMIN') or hasRole('OWNER')")
     public StandardResponse<UserForUser> removeEmployer(
-            @RequestParam String email
+            @RequestParam String email,
+            Principal principal
     ){
-        return userService.removeEmployer(email);
+        return userService.removeEmployer(email,principal);
     }
 
 }

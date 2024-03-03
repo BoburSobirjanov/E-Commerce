@@ -53,6 +53,8 @@ public class UserEntity extends BaseModel implements UserDetails {
 
     private LocalDateTime deletedTime;
 
+    private UUID changedRoleBy;
+
     @Column(columnDefinition = "boolean default false")
     private boolean isDeleted;
 

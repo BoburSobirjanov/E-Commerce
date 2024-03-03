@@ -96,12 +96,14 @@ public class UserService {
        }
     }
 
-    public StandardResponse<UserForUser> assignEmployer(String email){
+    public StandardResponse<UserForUser> assignEmployer(String email,Principal principal){
+        UserEntity user1 = userRepository.findUserEntityByEmail(principal.getName());
         UserEntity userEntity = userRepository.findUserEntityByEmail(email);
         if (userEntity==null){
             throw new DataNotFoundException("User not found!");
         }
         userEntity.setRoles(UserRole.EMPLOYER);
+        userEntity.setChangedRoleBy(user1.getId());
         userRepository.save(userEntity);
         UserForUser user = modelMapper.map(userEntity, UserForUser.class);
         return StandardResponse.<UserForUser>builder()
@@ -111,12 +113,14 @@ public class UserService {
                 .build();
     }
 
-    public StandardResponse<UserForUser> assignToAdmin(String email){
+    public StandardResponse<UserForUser> assignToAdmin(String email,Principal principal){
+        UserEntity users = userRepository.findUserEntityByEmail(principal.getName());
         UserEntity userEntity = userRepository.findUserEntityByEmail(email);
         if (userEntity==null){
             throw new DataNotFoundException("This user not found!");
         }
         userEntity.setRoles(UserRole.ADMIN);
+        userEntity.setChangedRoleBy(users.getId());
         userRepository.save(userEntity);
         UserForUser user = modelMapper.map(userEntity, UserForUser.class);
         return StandardResponse.<UserForUser>builder()
@@ -125,13 +129,15 @@ public class UserService {
                 .data(user)
                 .build();
     }
-    public StandardResponse<UserForUser> removeAdmin(String email){
+    public StandardResponse<UserForUser> removeAdmin(String email,Principal principal){
+        UserEntity user1 = userRepository.findUserEntityByEmail(principal.getName());
         UserEntity user = userRepository.findUserEntityByEmail(email);
         if (user==null){
             throw new DataNotFoundException("User not found!");
         }
         if (user.getRoles()==UserRole.ADMIN){
-        user.setRoles(UserRole.EMPLOYER);
+        user.setRoles(UserRole.USER);
+        user.setChangedRoleBy(user1.getId());
         userRepository.save(user);
         UserForUser userForUser = modelMapper.map(user,UserForUser.class);
         return StandardResponse.<UserForUser>builder()
@@ -163,12 +169,14 @@ public class UserService {
        throw new NotAcceptableException("Can not delete this user!");
    }
 
-   public StandardResponse<UserForUser> removeEmployer(String email){
+   public StandardResponse<UserForUser> removeEmployer(String email, Principal principal){
+        UserEntity userEntity = userRepository.findUserEntityByEmail(principal.getName());
         UserEntity user = userRepository.findUserEntityByEmail(email);
         if (user==null){
             throw new DataNotFoundException("User not found!");
         }
         user.setRoles(UserRole.USER);
+        user.setChangedRoleBy(userEntity.getId());
         UserForUser userForUser = modelMapper.map(user, UserForUser.class);
         return StandardResponse.<UserForUser>builder()
                 .status(Status.SUCCESS)
