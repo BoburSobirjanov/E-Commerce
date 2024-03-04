@@ -48,7 +48,8 @@ public class UserEntity extends BaseModel implements UserDetails {
     private Gender gender;
 
     private UUID deletedBy;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CardEntity> card;
 
     private LocalDateTime deletedTime;
