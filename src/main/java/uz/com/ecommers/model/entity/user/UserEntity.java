@@ -49,7 +49,7 @@ public class UserEntity extends BaseModel implements UserDetails {
 
     private UUID deletedBy;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private List<CardEntity> card;
 
     private LocalDateTime deletedTime;

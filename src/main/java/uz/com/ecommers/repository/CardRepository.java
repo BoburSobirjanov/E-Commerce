@@ -18,4 +18,6 @@ public interface CardRepository extends JpaRepository<CardEntity, UUID> {
     CardEntity findCardEntityByCardNumber(String number);
     @Query("select u from cards as u where u.isDeleted=false")
     Optional<List<CardForUser>> getAll();
+    @Query("select u from cards as u where u.isDeleted=false and u.createdBy=?1")
+    List<CardEntity> getCardEntitiesByCreatedBy(UUID id);
 }

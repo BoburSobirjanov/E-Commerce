@@ -3,6 +3,7 @@ package uz.com.ecommers.model.entity.card;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.com.ecommers.model.BaseModel;
+import uz.com.ecommers.model.entity.user.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
