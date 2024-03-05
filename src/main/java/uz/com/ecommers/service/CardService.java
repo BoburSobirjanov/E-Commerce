@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,14 @@ public class CardService {
         if (card!=null){
             throw new NotAcceptableException("Card has already added!");
         }
+    }
+
+    public List<CardEntity> getCardByUser(UUID id){
+        List<CardEntity> card = cardRepository.getCardEntitiesByCreatedBy(id);
+        if (card==null){
+            throw new DataNotFoundException("Card not found or this user did not add card!");
+        }
+        return card;
     }
 
     public StandardResponse<String> delete(String cardNumber, Principal principal){
