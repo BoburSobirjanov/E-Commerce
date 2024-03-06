@@ -4,10 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.com.ecommers.model.BaseModel;
 
 import java.time.LocalDateTime;
@@ -18,9 +15,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class OrderEntity extends BaseModel {
     private UUID productId;
-    private UUID userId;
+    private UUID createdBy;
     private Double cost;
     @Enumerated(value = EnumType.STRING)
     private OrderStatus status;
@@ -29,6 +27,7 @@ public class OrderEntity extends BaseModel {
     @Column(columnDefinition = "boolean default false")
     private boolean isDeleted;
     private LocalDateTime deletedTime;
+    private Integer productCount;
     private UUID deletedBy;
     private LocalDateTime deliveredTime;
 }

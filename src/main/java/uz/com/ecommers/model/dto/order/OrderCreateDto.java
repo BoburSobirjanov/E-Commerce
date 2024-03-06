@@ -10,4 +10,5 @@ import lombok.*;
 public class OrderCreateDto {
     private String productId;
     private String paymentMethod;
+    private Integer productCount;
 }
