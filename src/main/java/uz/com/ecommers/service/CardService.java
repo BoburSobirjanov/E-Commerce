@@ -30,7 +30,7 @@ public class CardService {
 
     public StandardResponse<CardForUser> save(CardCreateDto cardCreateDto, Principal principal){
         UserEntity user = userRepository.findUserEntityByEmail(principal.getName());
-        checkHasCard(cardCreateDto.getCardNumber(),cardCreateDto.getCardType());
+        checkHasCard(cardCreateDto.getCardNumber(), CardType.valueOf(cardCreateDto.getCardType()));
         CardEntity card = modelMapper.map(cardCreateDto, CardEntity.class);
         card.setCardNumber(cardCreateDto.getCardNumber());
         card.setType(CardType.valueOf(cardCreateDto.getCardType()));
@@ -43,11 +43,10 @@ public class CardService {
                 .message("Card added!")
                 .data(cardForUser)
                 .build();
-
     }
 
-    public void checkHasCard(String number, String type){
-        CardEntity card = cardRepository.findCardEntityByCardNumber(number);
+    public void checkHasCard(String number, CardType type){
+        CardEntity card = cardRepository.findCardEntityByCardNumberAndType(number,type);
         if (card!=null){
             throw new NotAcceptableException("Card has already added!");
         }

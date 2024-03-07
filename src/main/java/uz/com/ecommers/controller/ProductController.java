@@ -5,7 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.com.ecommers.model.dto.product.ProductCreateDto;
 import uz.com.ecommers.model.dto.product.ProductForUser;
-import uz.com.ecommers.model.entity.product.ProductEntity;
 import uz.com.ecommers.response.StandardResponse;
 import uz.com.ecommers.service.ProductService;
 

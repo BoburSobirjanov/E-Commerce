@@ -3,6 +3,7 @@ package uz.com.ecommers.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import uz.com.ecommers.exception.DataNotFoundException;
 import uz.com.ecommers.model.dto.order.OrderCreateDto;
 import uz.com.ecommers.model.dto.order.OrderForUser;
 import uz.com.ecommers.model.entity.order.OrderEntity;
@@ -41,6 +42,23 @@ public class OrderService {
                 .status(Status.SUCCESS)
                 .message("Order created!")
                 .data(orderForUser)
+                .build();
+    }
+
+    public StandardResponse<String> delete(UUID id,Principal principal){
+        UserEntity user = userRepository.findUserEntityByEmail(principal.getName());
+        OrderEntity order = orderRepository.findOrderEntityById(id);
+        if (order==null){
+            throw new DataNotFoundException("Order not found!");
+        }
+        order.setDeleted(true);
+        order.setDeletedBy(user.getId());
+        order.setDeletedTime(LocalDateTime.now());
+        orderRepository.save(order);
+        return StandardResponse.<String>builder()
+                .status(Status.SUCCESS)
+                .message("Order deleted!")
+                .data("DELETED SUCCESSFULLY!")
                 .build();
     }
 }

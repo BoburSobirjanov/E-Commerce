@@ -186,7 +186,10 @@ public class UserService {
    }
 
    public StandardResponse<UserForUser> getUserById(UUID id){
-        Optional<UserEntity> userEntity= userRepository.findById(id);
+        UserEntity userEntity= userRepository.findUserEntityById(id);
+        if (userEntity==null){
+            throw new DataNotFoundException("User not found!");
+        }
         UserForUser user = modelMapper.map(userEntity, UserForUser.class);
         return StandardResponse.<UserForUser>builder()
                 .status(Status.SUCCESS)
