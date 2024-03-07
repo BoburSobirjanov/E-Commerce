@@ -40,7 +40,7 @@ public class UserEntity extends BaseModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole roles;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private List<OrderEntity> orders;
 
     @Column(nullable = false)
@@ -59,7 +59,7 @@ public class UserEntity extends BaseModel implements UserDetails {
     @Column(columnDefinition = "boolean default false")
     private boolean isDeleted;
 
-    @OneToMany
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private List<ProductEntity> products;
 
     @Override
